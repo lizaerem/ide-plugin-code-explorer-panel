@@ -1,39 +1,42 @@
 package com.github.lizaerem.ideplugincodeexplorerpanel
 
-import com.intellij.ide.highlighter.XmlFileType
+import com.github.lizaerem.ideplugincodeexplorerpanel.services.MyProjectService
 import com.intellij.openapi.components.service
-import com.intellij.psi.xml.XmlFile
+import com.intellij.psi.PsiFile
 import com.intellij.testFramework.TestDataPath
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
-import com.intellij.util.PsiErrorElementUtil
-import com.github.lizaerem.ideplugincodeexplorerpanel.services.MyProjectService
 
 @TestDataPath("\$CONTENT_ROOT/src/test/testData")
 class MyPluginTest : BasePlatformTestCase() {
 
-    fun testXMLFile() {
-        val psiFile = myFixture.configureByText(XmlFileType.INSTANCE, "<foo>bar</foo>")
-        val xmlFile = assertInstanceOf(psiFile, XmlFile::class.java)
-
-        assertFalse(PsiErrorElementUtil.hasErrors(project, xmlFile.virtualFile))
-
-        assertNotNull(xmlFile.rootTag)
-
-        xmlFile.rootTag?.let {
-            assertEquals("foo", it.name)
-            assertEquals("bar", it.value.text)
-        }
-    }
-
-    fun testRename() {
-        myFixture.testRename("foo.xml", "foo_after.xml", "a2")
-    }
-
-    fun testProjectService() {
+    fun testCountsInKotlinFile() {
         val projectService = project.service<MyProjectService>()
 
-        assertNotSame(projectService.getRandomNumber(), projectService.getRandomNumber())
+        val psiFile: PsiFile? = myFixture.configureByFile("DummyClass.kt")
+
+        assertNotNull(psiFile)
+        assertEquals(1, psiFile?.let { projectService.countClassesInFile(it, PluginConstants.KOTLIN_CLASS) })
+        assertEquals(2, psiFile?.let { projectService.countMethodsInKotlinFile(it) })
     }
 
-    override fun getTestDataPath() = "src/test/testData/rename"
+    fun testCountsInOneFileJavaProject() {
+        val projectService = project.service<MyProjectService>()
+        myFixture.configureByFile("DummyClass.java")
+
+        assertEquals(Pair(1, 2), projectService.countJavaClassesAndFunctions(project))
+    }
+
+    fun testCountsInComplexProject() {
+        val projectService = project.service<MyProjectService>()
+        myFixture.configureByFile("myComplexProject/src/main/kotlin/com/example/Main.kt")
+        myFixture.configureByFile("myComplexProject/src/main/java/com/example/MyClass.java")
+        myFixture.configureByFile("myComplexProject/src/main/java/com/example/MyInterface.java")
+        myFixture.configureByFile("myComplexProject/src/main/java/com/example/subpackage/SubClass.java")
+        myFixture.configureByFile("myComplexProject/src/test/kotlin/com/example/MyTest.kt")
+
+        assertEquals(Pair(2, 2), projectService.countKotlinClassesAndFunctions(project))
+        assertEquals(Pair(3, 3), projectService.countJavaClassesAndFunctions(project))
+    }
+
+    override fun getTestDataPath() = "src/test/testData/resources"
 }

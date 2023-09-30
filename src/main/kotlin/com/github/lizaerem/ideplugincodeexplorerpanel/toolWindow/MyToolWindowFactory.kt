@@ -8,20 +8,18 @@ import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBPanel
 import com.intellij.ui.content.ContentFactory
-import com.github.lizaerem.ideplugincodeexplorerpanel.MyBundle
 import com.github.lizaerem.ideplugincodeexplorerpanel.services.MyProjectService
-import javax.swing.JButton
 
 
 class MyToolWindowFactory : ToolWindowFactory {
 
     init {
-        thisLogger().warn("Don't forget to remove all non-needed sample code files with their corresponding registration entries in `plugin.xml`.")
+        thisLogger().debug("Initialization of MyToolWindowFactory")
     }
 
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
         val myToolWindow = MyToolWindow(toolWindow)
-        val content = ContentFactory.getInstance().createContent(myToolWindow.getContent(), null, false)
+        val content = ContentFactory.getInstance().createContent(myToolWindow.getContent(project), null, false)
         toolWindow.contentManager.addContent(content)
     }
 
@@ -31,15 +29,17 @@ class MyToolWindowFactory : ToolWindowFactory {
 
         private val service = toolWindow.project.service<MyProjectService>()
 
-        fun getContent() = JBPanel<JBPanel<*>>().apply {
-            val label = JBLabel(MyBundle.message("randomLabel", "?"))
+        fun getContent(project: Project) = JBPanel<JBPanel<*>>().apply {
+            val (kotlinClass, kotlinFunc) = service.countKotlinClassesAndFunctions(project)
+            val (javaClass, javaFunc) = service.countJavaClassesAndFunctions(project)
 
-            add(label)
-            add(JButton(MyBundle.message("shuffle")).apply {
-                addActionListener {
-                    label.text = MyBundle.message("randomLabel", service.getRandomNumber())
-                }
-            })
+            val kotlinStat = JBLabel("Kotlin Classes/Functions: ${kotlinClass}/${kotlinFunc}")
+            val javaStat = JBLabel("Java Classes/Functions: ${javaClass}/${javaFunc}")
+            val total = JBLabel("Total Classes/Functios: ${kotlinClass + javaClass}/${kotlinFunc + javaFunc}")
+
+            add(kotlinStat)
+            add(javaStat)
+            add(total)
         }
     }
 }
