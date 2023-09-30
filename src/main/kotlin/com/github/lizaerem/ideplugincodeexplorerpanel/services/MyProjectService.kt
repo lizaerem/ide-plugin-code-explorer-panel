@@ -56,7 +56,7 @@ class MyProjectService(project: Project) {
         return classes
     }
 
-    // TODO: create one function with methodClass parameter (it's failing so far) for counting methods
+    // TODO: create one function with methodClass parameter (so it's not failing) for counting methods
     fun countMethodsInKotlinFile(psiFile: PsiFile): Int {
         if (thisLogger().isDebugEnabled) {
             thisLogger().debug("(countMethods) PsiFile: $psiFile")
