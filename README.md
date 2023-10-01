@@ -17,7 +17,12 @@
 - [ ] Click the <kbd>Watch</kbd> button on the top of the [IntelliJ Platform Plugin Template][template] to be notified about releases containing new features and fixes.
 
 <!-- Plugin description -->
-A simple plugin for the IDEA platform that adds an additional side panel displaying the number of classes and functions for each file in the currently open project.
+##
+A simple plugin for the IDEA platform that adds an additional side panel displaying the number of classes and functions for all Kotlin/Java files in the currently open project:
+
+<img width="418" alt="image" src="https://github.com/lizaerem/ide-plugin-code-explorer-panel/assets/70374721/73b79402-73a7-4a54-a9d1-c18c23883be5">
+
+Ideas to implement: count classes and methods for currently open file as well, make it possible to choose from the list of files to count on a particular subset of files.
 <!-- Plugin description end -->
 
 ## Installation
