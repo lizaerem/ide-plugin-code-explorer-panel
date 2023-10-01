@@ -4,14 +4,17 @@ import com.github.lizaerem.ideplugincodeexplorerpanel.MyBundle
 import com.github.lizaerem.ideplugincodeexplorerpanel.PluginConstants
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.diagnostic.thisLogger
+import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.project.Project
-import com.intellij.psi.PsiManager
+import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiFile
-import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.psi.PsiManager
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.search.FilenameIndex
 import com.intellij.psi.search.GlobalSearchScope
+import com.intellij.psi.util.PsiTreeUtil
 import org.jetbrains.kotlin.psi.KtNamedFunction
+
 
 @Service(Service.Level.PROJECT)
 class MyProjectService(project: Project) {
@@ -73,6 +76,24 @@ class MyProjectService(project: Project) {
 
         val methods = PsiTreeUtil.findChildrenOfType(psiFile, PsiMethod::class.java)
         return methods.size
+    }
+
+    fun getStatsForOpenFile(project: Project): Pair<Int, Int> {
+        val psiFile = getCurrentlyOpenFile(project) ?: return Pair(0, 0)
+
+        val virtualFile = psiFile.virtualFile
+        val extension = virtualFile.extension ?: ""
+
+        return when (extension) {
+            "kt" -> Pair(countClassesInFile(psiFile, PluginConstants.KOTLIN_CLASS), countMethodsInKotlinFile(psiFile))
+            "java" -> Pair(countClassesInFile(psiFile, PluginConstants.JAVA_CLASS), countMethodsInJavaFile(psiFile))
+            else -> Pair(0, 0)
+        }
+    }
+
+    private fun getCurrentlyOpenFile(project: Project): PsiFile? {
+        val currentDoc = FileEditorManager.getInstance(project).selectedTextEditor?.document
+        return currentDoc?.let { PsiDocumentManager.getInstance(project).getPsiFile(it) }
     }
 
     init {
