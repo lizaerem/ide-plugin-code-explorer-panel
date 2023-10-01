@@ -7,7 +7,7 @@
 <!-- Plugin description -->
 A simple plugin for the IDEA platform that adds an additional side panel displaying the number of classes and functions for all `Kotlin`/`Java` files in the currently open project, as well as for currently open file:
 
-<img width="487" alt="image" src="https://github.com/lizaerem/ide-plugin-code-explorer-panel/assets/70374721/58a491e7-4f07-499d-bcfa-fbb01d9066ff">
+<img width="495" alt="image" src="https://github.com/lizaerem/ide-plugin-code-explorer-panel/assets/70374721/8129d11a-ee01-47cf-8853-fdfed84b3835">
 
 ##
 **Ideas to implement**: make it possible to choose from the list of files to count on a particular subset of files; include name of currently open file.
