@@ -1,8 +1,8 @@
 # ide-plugin-code-explorer-panel
 
 ![Build](https://github.com/lizaerem/ide-plugin-code-explorer-panel/workflows/Build/badge.svg)
-[![Version](https://img.shields.io/jetbrains/plugin/v/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/PLUGIN_ID)
-[![Downloads](https://img.shields.io/jetbrains/plugin/d/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/PLUGIN_ID)
+![](https://img.shields.io/badge/Kotlin-orange)
+[![GitHub release (with filter)](https://img.shields.io/github/v/release/lizaerem/ide-plugin-code-explorer-panel)](https://github.com/lizaerem/ide-plugin-code-explorer-panel/releases/tag/v0.1.0-alpha)
 ##
 <!-- Plugin description -->
 A simple plugin for the IDEA platform that adds an additional side panel displaying the number of classes and functions for all `Kotlin`/`Java` files in the currently open project, as well as for currently open file:
