@@ -26,6 +26,13 @@ class MyPluginTest : BasePlatformTestCase() {
         assertEquals(Pair(1, 2), projectService.countJavaClassesAndFunctions(project))
     }
 
+    fun testCountsInUnsupportedFile() {
+        val projectService = project.service<MyProjectService>()
+        myFixture.configureByFile("UnsupportedExtension.txt")
+
+        assertEquals(Pair(0, 0), projectService.getStatsForOpenFile(project))
+    }
+
     fun testCountsInComplexProject() {
         val projectService = project.service<MyProjectService>()
         myFixture.configureByFile("myComplexProject/src/main/kotlin/com/example/Main.kt")
