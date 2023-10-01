@@ -12,7 +12,7 @@
     <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.lizaerem.ideplugincodeexplorerpanel.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
+        <toolWindow factoryClass="com.github.lizaerem.ideplugincodeexplorerpanel.toolWindow.MyToolWindowFactory" id="Code Explorer"/>
     </extensions>
 
     <applicationListeners>
